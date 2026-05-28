@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buat Janji | KlinikQu</title>
+  <meta name="description"
+    content="Buat janji temu dengan dokter gigi KlinikQu. Pilih layanan dan jadwal yang sesuai." />
+  <link rel="shortcut icon" href="./assets/images/KlinikQu.png" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Rubik:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <style>
+    :root {
+      --midnight-green: hsl(186, 100%, 19%);
+      --midnight-green-25: hsla(186, 100%, 19%, 0.25);
+      --verdigris: hsl(182, 100%, 35%);
+      --verdigris-light: hsl(182, 100%, 55%);
+      --ming: hsl(186, 72%, 24%);
+      --alice-blue: hsl(187, 25%, 94%);
+      --independece: hsl(236, 14%, 39%);
+      --gainsboro: hsl(0, 0%, 87%);
+      --gray-web: hsl(0, 0%, 50%);
+      --rich-black: hsl(222, 44%, 8%);
+      --white: hsl(0, 0%, 100%);
+      --success: hsl(145, 63%, 38%);
+      --danger: hsl(0, 72%, 42%);
+      --warning: hsl(35, 100%, 45%);
+      --shadow-card: 0 8px 32px hsla(186, 100%, 19%, 0.12);
+      --radius-12: 12px;
+      --radius-6: 6px;
+      --ff-oswald: 'Oswald', sans-serif;
+      --ff-rubik: 'Rubik', sans-serif;
+      --t1: 0.25s ease;
+      --t2: 0.5s ease;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--ff-rubik);
+      background: linear-gradient(135deg, hsl(186, 100%, 10%) 0%, hsl(186, 72%, 18%) 50%, hsl(222, 44%, 12%) 100%);
+      min-height: 100vh;
+      color: var(--rich-black);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: var(--ff-rubik);
+    }
+
+    textarea {
+      font-family: var(--ff-rubik);
+      resize: vertical;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: hsla(186, 100%, 10%, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid hsla(182, 100%, 35%, 0.2);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topbar-logo img {
+      height: 36px;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: hsla(182, 100%, 35%, 0.12);
+      border: 1px solid hsla(182, 100%, 35%, 0.25);
+      border-radius: 50px;
+      padding: 6px 14px 6px 8px;
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--verdigris), var(--midnight-green));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      background: hsla(0, 0%, 100%, 0.1);
+      color: var(--white);
+      border-radius: var(--radius-6);
+      font-size: 13px;
+      font-weight: 500;
+      transition: var(--t1);
+      border: 1px solid hsla(0, 0%, 100%, 0.15);
+    }
+
+    .back-btn:hover {
+      background: hsla(0, 0%, 100%, 0.18);
+      transform: translateX(-2px);
+    }
+
+    .back-btn ion-icon {
+      font-size: 17px;
+    }
+
+    /* ── PAGE WRAPPER ── */
+    .page-wrapper {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 44px 32px 80px;
+    }
+
+    /* ── GRID LAYOUT ── */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .form-container {
+      min-width: 0;
+    }
+
+    @media (max-width: 1100px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page-wrapper {
+        padding: 30px 14px 60px;
+      }
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.6s ease;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: hsla(182, 100%, 35%, 0.15);
+      border: 1px solid hsla(182, 100%, 35%, 0.3);
+      color: var(--verdigris-light);
+      padding: 5px 16px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .page-header h1 {
+      font-family: var(--ff-oswald);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .page-header h1 span {
+      color: var(--verdigris-light);
+    }
+
+    .page-header p {
+      color: hsla(0, 0%, 100%, 0.6);
+      font-size: 15px;
+    }
+
+    /* ── STEP INDICATOR ── */
+    .steps-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 40px;
+      animation: fadeIn 0.5s ease 0.1s both;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .step-circle {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-oswald);
+      font-size: 16px;
+      font-weight: 700;
+      background: hsla(0, 0%, 100%, 0.08);
+      border: 2px solid hsla(0, 0%, 100%, 0.18);
+      color: hsla(0, 0%, 100%, 0.45);
+      transition: var(--t2);
+      position: relative;
+    }
+
+    .step-circle .num {
+      transition: var(--t1);
+    }
+
+    .step-circle .ok {
+      display: none;
+      font-size: 20px;
+    }
+
+    .step-item.active .step-circle {
+      background: var(--verdigris);
+      border-color: var(--verdigris);
+      color: var(--white);
+      box-shadow: 0 0 22px hsla(182, 100%, 35%, 0.5);
+    }
+
+    .step-item.done .step-circle {
+      background: var(--success);
+      border-color: var(--success);
+      color: var(--white);
+    }
+
+    .step-item.done .step-circle .num {
+      display: none;
+    }
+
+    .step-item.done .step-circle .ok {
+      display: block;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: hsla(0, 0%, 100%, 0.4);
+      transition: var(--t1);
+    }
+
+    .step-item.active .step-label,
+    .step-item.done .step-label {
+      color: hsla(0, 0%, 100%, 0.88);
+    }
+
+    .step-line {
+      width: 90px;
+      height: 2px;
+      background: hsla(0, 0%, 100%, 0.12);
+      margin-bottom: 24px;
+      transition: background var(--t2);
+    }
+
+    .step-line.done {
+      background: var(--success);
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: var(--shadow-card);
+      animation: fadeInUp 0.45s ease;
+    }
+
+    .card-title {
+      font-family: var(--ff-oswald);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--midnight-green);
+      margin-bottom: 4px;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: var(--gray-web);
+      margin-bottom: 26px;
+    }
+
+    /* ── PANEL ── */
+    .step-panel {
+      display: none;
+    }
+
+    .step-panel.active {
+      display: block;
+    }
+
+    /* ── SERVICE GRID ── */
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .svc-card {
+      border: 2px solid var(--gainsboro);
+      border-radius: var(--radius-12);
+      padding: 20px 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--t1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .svc-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, hsla(186, 100%, 19%, 0.04), hsla(182, 100%, 35%, 0.06));
+      opacity: 0;
+      transition: var(--t1);
+    }
+
+    .svc-card:hover {
+      border-color: var(--verdigris);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px hsla(186, 100%, 19%, 0.1);
+    }
+
+    .svc-card:hover::after {
+      opacity: 1;
+    }
+
+    .svc-card.selected {
+      border-color: var(--midnight-green);
+      box-shadow: 0 4px 20px hsla(186, 100%, 19%, 0.18);
+    }
+
+    .svc-card.selected::after {
+      opacity: 1;
+    }
+
+    .svc-check {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 20px;
+      height: 20px;
+      background: var(--midnight-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0);
+      transition: var(--t1);
+    }
+
+    .svc-card.selected .svc-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .svc-check ion-icon {
+      color: white;
+      font-size: 12px;
+    }
+
+    .svc-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 24px;
+      transition: var(--t1);
+    }
+
+    .svc-card:hover .svc-icon,
+    .svc-card.selected .svc-icon {
+      transform: scale(1.1);
+    }
+
+    .svc-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--midnight-green);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .svc-desc {
+      font-size: 11px;
+      color: var(--gray-web);
+      line-height: 1.4;
+    }
+
+    /* ── KELUHAN ── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 22px 0 18px;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gainsboro);
+    }
+
+    .section-divider span {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-web);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .section-divider ion-icon {
+      color: var(--verdigris);
+      font-size: 15px;
+    }
+
+    /* ── FORM ── */
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--midnight-green);
+      margin-bottom: 9px;
+    }
+
+    .form-label ion-icon {
+      font-size: 16px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid var(--gainsboro);
+      border-radius: var(--radius-12);
+      font-family: var(--ff-rubik);
+      font-size: 14px;
+      color: var(--rich-black);
+      transition: var(--t1);
+      background: var(--white);
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--verdigris);
+      box-shadow: 0 0 0 3px hsla(182, 100%, 35%, 0.1);
+    }
+
+    .char-count {
+      font-size: 11px;
+      color: var(--gray-web);
+      text-align: right;
+      margin-top: 5px;
+    }
+
+    /* ── DATE + TIME (STEP 2) ── */
+    .date-wrap {
+      margin-bottom: 28px;
+    }
+
+    .date-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 14px;
+    }
+
+    .date-hint {
+      background: hsla(186, 100%, 19%, 0.05);
+      border: 1px solid hsla(186, 100%, 19%, 0.12);
+      border-radius: var(--radius-12);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .date-hint ion-icon {
+      color: var(--verdigris);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .date-hint span {
+      font-size: 12px;
+      color: var(--independece);
+      line-height: 1.4;
+    }
+
+    /* ── TIME SLOTS ── */
+    .time-legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gray-web);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .legend-dot.available {
+      background: var(--gainsboro);
+      border: 1.5px solid #bbb;
+    }
+
+    .legend-dot.selected-c {
+      background: var(--midnight-green);
+    }
+
+    .legend-dot.booked-c {
+      background: hsla(0, 0%, 80%, 0.5);
+    }
+
+    .time-section {
+      margin-bottom: 22px;
+    }
+
+    .time-section-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--independece);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 11px;
+    }
+
+    .time-section-label ion-icon {
+      color: var(--verdigris);
+      font-size: 15px;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 9px;
+    }
+
+    .time-btn {
+      padding: 11px 6px;
+      border: 2px solid var(--gainsboro);
+      border-radius: var(--radius-6);
+      background: var(--white);
+      font-family: var(--ff-rubik);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--rich-black);
+      text-align: center;
+      transition: var(--t1);
+    }
+
+    .time-btn:not(.booked):hover {
+      border-color: var(--verdigris);
+      color: var(--verdigris);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px hsla(182, 100%, 35%, 0.15);
+    }
+
+    .time-btn.selected {
+      background: var(--midnight-green);
+      border-color: var(--midnight-green);
+      color: var(--white);
+      box-shadow: 0 4px 16px hsla(186, 100%, 19%, 0.28);
+    }
+
+    .time-btn.booked {
+      background: hsla(0, 0%, 90%, 0.5);
+      color: var(--gainsboro);
+      border-color: hsla(0, 0%, 85%, 0.4);
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    .time-btn.booked::after {
+      content: 'Penuh';
+      display: block;
+      font-size: 9px;
+      font-weight: 600;
+      color: #bbb;
+      margin-top: 1px;
+    }
+
+    .loading-slots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 30px;
+      color: var(--gray-web);
+      font-size: 14px;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--gainsboro);
+      border-top-color: var(--verdigris);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    /* ── REVIEW / STEP 3 ── */
+    .user-info-card {
+      background: linear-gradient(135deg, hsla(186, 100%, 19%, 0.05), hsla(182, 100%, 35%, 0.08));
+      border: 1px solid hsla(186, 100%, 19%, 0.12);
+      border-radius: var(--radius-12);
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .review-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--verdigris), var(--midnight-green));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .review-user-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--midnight-green);
+      margin-bottom: 2px;
+    }
+
+    .review-user-email {
+      font-size: 13px;
+      color: var(--gray-web);
+    }
+
+    .review-detail {
+      background: hsla(186, 100%, 19%, 0.03);
+      border: 1px solid hsla(186, 100%, 19%, 0.1);
+      border-radius: var(--radius-12);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .review-detail-title {
+      background: hsla(186, 100%, 19%, 0.06);
+      padding: 12px 20px;
+      font-family: var(--ff-oswald);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--midnight-green);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid hsla(186, 100%, 19%, 0.08);
+    }
+
+    .review-detail-title ion-icon {
+      color: var(--verdigris);
+    }
+
+    .review-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 20px;
+      border-bottom: 1px solid hsla(0, 0%, 87%, 0.5);
+    }
+
+    .review-row:last-child {
+      border-bottom: none;
+    }
+
+    .review-row ion-icon {
+      font-size: 18px;
+      color: var(--verdigris);
+      width: 22px;
+      flex-shrink: 0;
+    }
+
+    .review-lbl {
+      font-size: 11px;
+      color: var(--gray-web);
+      margin-bottom: 2px;
+    }
+
+    .review-val {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--rich-black);
+    }
+
+    .notice-box {
+      background: hsla(35, 100%, 50%, 0.07);
+      border: 1px solid hsla(35, 100%, 50%, 0.22);
+      border-radius: var(--radius-12);
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .notice-box ion-icon {
+      color: var(--warning);
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .notice-box p {
+      font-size: 13px;
+      color: hsl(35, 50%, 28%);
+      line-height: 1.5;
+    }
+
+    .notice-box strong {
+      color: hsl(35, 50%, 22%);
+    }
+
+    /* ── BUTTONS ── */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: var(--radius-12);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--t1);
+      border: none;
+      font-family: var(--ff-rubik);
+    }
+
+    .btn ion-icon {
+      font-size: 17px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--midnight-green), var(--verdigris));
+      color: var(--white);
+      box-shadow: 0 4px 18px hsla(186, 100%, 19%, 0.32);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px hsla(186, 100%, 19%, 0.42);
+    }
+
+    .btn-secondary {
+      background: var(--alice-blue);
+      color: var(--midnight-green);
+      border: 2px solid hsla(186, 100%, 19%, 0.12);
+    }
+
+    .btn-secondary:hover {
+      background: hsla(186, 100%, 19%, 0.07);
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, hsl(145, 63%, 28%), hsl(145, 63%, 40%));
+      color: var(--white);
+      box-shadow: 0 4px 18px hsla(145, 63%, 28%, 0.32);
+    }
+
+    .btn-success:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px hsla(145, 63%, 28%, 0.42);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* ── HISTORY SECTION ── */
+    .history-section {
+      margin-top: 0;
+      animation: fadeIn 0.5s ease 0.2s both;
+    }
+
+    .history-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .history-title {
+      font-family: var(--ff-oswald);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .count-badge {
+      background: hsla(182, 100%, 35%, 0.18);
+      border: 1px solid hsla(182, 100%, 35%, 0.3);
+      color: var(--verdigris-light);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .history-empty {
+      background: hsla(0, 0%, 100%, 0.05);
+      border: 1px dashed hsla(0, 0%, 100%, 0.18);
+      border-radius: 18px;
+      padding: 48px 20px;
+      text-align: center;
+    }
+
+    .history-empty ion-icon {
+      font-size: 52px;
+      color: hsla(0, 0%, 100%, 0.2);
+      margin-bottom: 14px;
+    }
+
+    .history-empty p {
+      color: hsla(0, 0%, 100%, 0.4);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .history-card {
+      background: var(--white);
+      border-radius: var(--radius-12);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 40px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 18px hsla(0, 0%, 0%, 0.08);
+      animation: slideInRight 0.4s ease;
+      border: 1px solid transparent;
+      transition: var(--t1);
+    }
+
+    .history-card:hover {
+      border-color: var(--verdigris);
+      transform: scale(1.02);
+    }
+
+    .h-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, hsla(186, 100%, 19%, 0.08), hsla(182, 100%, 35%, 0.12));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .h-service {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--midnight-green);
+      margin-bottom: 5px;
+    }
+
+    .h-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .h-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--gray-web);
+    }
+
+    .h-meta ion-icon {
+      font-size: 13px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .status-menunggu {
+      background: hsla(35, 100%, 50%, 0.1);
+      color: var(--warning);
+    }
+
+    .status-menunggu::before {
+      background: var(--warning);
+    }
+
+    .status-dikonfirmasi {
+      background: hsla(145, 63%, 38%, 0.1);
+      color: var(--success);
+    }
+
+    .status-dikonfirmasi::before {
+      background: var(--success);
+    }
+
+    .status-selesai {
+      background: hsla(186, 100%, 19%, 0.08);
+      color: var(--midnight-green);
+    }
+
+    .status-selesai::before {
+      background: var(--midnight-green);
+    }
+
+    .status-dibatalkan {
+      background: hsla(0, 72%, 42%, 0.08);
+      color: var(--danger);
+    }
+
+    .status-dibatalkan::before {
+      background: var(--danger);
+    }
+
+    .h-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: var(--t1);
+    }
+
+    .btn-edit-link {
+      color: var(--verdigris);
+      background: hsla(182, 100%, 35%, 0.1);
+    }
+
+    .btn-edit-link:hover {
+      background: var(--verdigris);
+      color: white;
+    }
+
+    /* hitory loading */
+    .history-loading {
+      text-align: center;
+      padding: 30px;
+      color: hsla(0, 0%, 100%, 0.4);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .spinner-white {
+      width: 18px;
+      height: 18px;
+      border: 2px solid hsla(0, 0%, 100%, 0.2);
+      border-top-color: var(--verdigris-light);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: hsla(0, 0%, 0%, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 46px 38px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      animation: popIn 0.35s cubic-bezier(0.05, 0.83, 0.52, 0.97);
+      box-shadow: 0 24px 60px hsla(0, 0%, 0%, 0.25);
+    }
+
+    .modal-icon {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, hsl(145, 63%, 90%), hsl(145, 63%, 78%));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 22px;
+      font-size: 36px;
+    }
+
+    .modal-title {
+      font-family: var(--ff-oswald);
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--midnight-green);
+      margin-bottom: 8px;
+    }
+
+    .modal-text {
+      font-size: 14px;
+      color: var(--gray-web);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .modal-text strong {
+      color: var(--midnight-green);
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      top: 76px;
+      right: 20px;
+      background: var(--danger);
+      color: var(--white);
+      padding: 12px 18px;
+      border-radius: var(--radius-12);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px hsla(0, 0%, 0%, 0.2);
+      transform: translateX(150%);
+      transition: transform 0.3s cubic-bezier(0.05, 0.83, 0.52, 0.97);
+      z-index: 1000;
+      max-width: 320px;
+    }
+
+    .toast.info {
+      background: var(--midnight-green);
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast ion-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ── API ERROR BANNER ── */
+    .api-warn {
+      background: hsla(35, 100%, 50%, 0.12);
+      border: 1px solid hsla(35, 100%, 50%, 0.3);
+      border-radius: var(--radius-12);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: hsl(35, 60%, 30%);
+      margin-bottom: 20px;
+    }
+
+    .api-warn ion-icon {
+      color: var(--warning);
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.86);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .topbar {
+        padding: 12px 16px;
+      }
+
+      .page-wrapper {
+        padding: 30px 14px 60px;
+      }
+
+      .card {
+        padding: 22px 18px;
+      }
+
+      .service-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .step-line {
+        width: 44px;
+      }
+
+      .step-label {
+        font-size: 10px;
+      }
+
+      .nav-buttons {
+        flex-direction: column-reverse;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .history-card {
+        grid-template-columns: 40px 1fr;
+      }
+
+      .status-badge {
+        display: none;
+      }
+
+      .time-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .date-row {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-box {
+        padding: 32px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== TOPBAR ===== -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <img src="./assets/images/KlinikQu.png" alt="KlinikQu" onerror="this.style.display='none'" />
+      </div>
+      <div class="user-chip" id="userChip" style="display:none;">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-name" id="userNameDisplay">Memuat...</span>
+      </div>
+    </div>
+    <button class="back-btn" onclick="confirmBack()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+      Kembali
+    </button>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <div class="page-wrapper">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="badge">
+        <ion-icon name="calendar-outline"></ion-icon>
+        Reservasi Online
+      </div>
+      <h1>Buat <span>Janji Temu</span></h1>
+      <p>Pilih layanan, tanggal, dan jam kunjungan Anda dengan mudah.</p>
+    </div>
+
+    <!-- OFFLINE WARNING (shown if server unreachable) -->
+    <div class="api-warn" id="apiWarn" style="display:none;">
+      <ion-icon name="warning-outline"></ion-icon>
+      Server sedang offline. Pastikan server berjalan dengan <strong>node server.js</strong> di terminal.
+    </div>
+
+    <!-- STEP INDICATOR (3 steps) -->
+    <div class="main-grid">
+      <!-- KOLOM KIRI: Form + Steps -->
+      <div class="form-container">
+
+        <div class="steps-bar">
+          <div class="step-item active" id="si-1">
+            <div class="step-circle">
+              <span class="num">1</span>
+              <ion-icon name="checkmark-outline" class="ok"></ion-icon>
+            </div>
+            <div class="step-label">Layanan</div>
+          </div>
+          <div class="step-line" id="sl-1"></div>
+
+          <div class="step-item" id="si-2">
+            <div class="step-circle">
+              <span class="num">2</span>
+              <ion-icon name="checkmark-outline" class="ok"></ion-icon>
+            </div>
+            <div class="step-label">Jadwal</div>
+          </div>
+          <div class="step-line" id="sl-2"></div>
+
+          <div class="step-item" id="si-3">
+            <div class="step-circle">
+              <span class="num">3</span>
+              <ion-icon name="checkmark-outline" class="ok"></ion-icon>
+            </div>
+            <div class="step-label">Konfirmasi</div>
+          </div>
+        </div><!-- /steps-bar -->
+
+        <!-- ===== STEP 1: LAYANAN + KELUHAN ===== -->
+        <div class="step-panel active" id="panel-1">
+          <div class="card">
+            <div class="card-title">Pilih Layanan Gigi</div>
+            <div class="card-sub">Klik kartu layanan yang Anda butuhkan</div>
+
+            <div class="service-grid" id="serviceGrid">
+              <div class="svc-card" data-service="Pemeriksaan Gigi" onclick="selectService(this)">
+                <div class="svc-check"><ion-icon name="checkmark-outline"></ion-icon></div>
+                <div class="svc-icon" style="background:hsla(210,100%,50%,0.1);color:hsl(210,100%,40%)">🦷</div>
+                <div class="svc-name">Pemeriksaan Gigi</div>
+                <div class="svc-desc">Pemeriksaan menyeluruh kondisi gigi &amp; mulut</div>
+              </div>
+              <div class="svc-card" data-service="Scaling / Karang Gigi" onclick="selectService(this)">
+                <div class="svc-check"><ion-icon name="checkmark-outline"></ion-icon></div>
+                <div class="svc-icon" style="background:hsla(182,100%,35%,0.1);color:var(--verdigris)">✨</div>
+                <div class="svc-name">Scaling / Karang Gigi</div>
+                <div class="svc-desc">Pembersihan plak &amp; karang gigi profesional</div>
+              </div>
+              <div class="svc-card" data-service="Cabut Gigi" onclick="selectService(this)">
+                <div class="svc-check"><ion-icon name="checkmark-outline"></ion-icon></div>
+                <div class="svc-icon" style="background:hsla(0,72%,42%,0.1);color:hsl(0,72%,42%)">🩺</div>
+                <div class="svc-name">Cabut Gigi</div>
+                <div class="svc-desc">Pencabutan gigi yang aman dan nyaman</div>
+              </div>
+              <div class="svc-card" data-service="Tambal Gigi" onclick="selectService(this)">
+                <div class="svc-check"><ion-icon name="checkmark-outline"></ion-icon></div>
+                <div class="svc-icon" style="background:hsla(280,60%,50%,0.1);color:hsl(280,60%,45%)">🔧</div>
+                <div class="svc-name">Tambal Gigi</div>
+                <div class="svc-desc">Penambalan gigi berlubang dengan bahan terbaik</div>
+              </div>
+              <div class="svc-card" data-service="Konsultasi Ortodonti" onclick="selectService(this)">
+                <div class="svc-check"><ion-icon name="checkmark-outline"></ion-icon></div>
+                <div class="svc-icon" style="background:hsla(35,100%,50%,0.1);color:hsl(35,100%,38%)">😁</div>
+                <div class="svc-name">Konsultasi Ortodonti</div>
+                <div class="svc-desc">Kawat gigi &amp; perataan gigi profesional</div>
+              </div>
+              <div class="svc-card" data-service="Saluran Akar" onclick="selectService(this)">
+                <div class="svc-check"><ion-icon name="checkmark-outline"></ion-icon></div>
+                <div class="svc-icon" style="background:hsla(145,63%,42%,0.1);color:hsl(145,63%,32%)">💊</div>
+                <div class="svc-name">Saluran Akar</div>
+                <div class="svc-desc">Perawatan akar gigi yang terinfeksi</div>
+              </div>
+            </div>
+
+            <!-- KELUHAN -->
+            <div class="section-divider">
+              <span>
+                <ion-icon name="document-text-outline"></ion-icon>
+                Keluhan / Catatan untuk Dokter
+              </span>
+            </div>
+            <label class="form-label">
+              <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+              Ceritakan keluhan Anda <span
+                style="font-weight:400;color:var(--gray-web);margin-left:4px;">(opsional)</span>
+            </label>
+            <textarea id="keluhanInput" class="form-input" rows="4" maxlength="500"
+              placeholder="Contoh: Gigi geraham kiri bawah terasa nyeri saat mengunyah sejak 3 hari lalu..."></textarea>
+            <div class="char-count"><span id="charCount">0</span>/500 karakter</div>
+
+            <div class="nav-buttons">
+              <button class="btn btn-secondary" id="cancelEditBtn" onclick="cancelEdit()" style="display:none;">
+                <ion-icon name="close-outline"></ion-icon>
+                Batal Edit
+              </button>
+              <div id="spacer1" style="flex:1;"></div>
+              <button class="btn btn-primary" id="next1Btn" onclick="goToStep(2)" disabled>
+                Pilih Jadwal
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </div><!-- /panel-1 -->
+
+        <!-- ===== STEP 2: TANGGAL + JAM ===== -->
+        <div class="step-panel" id="panel-2">
+          <div class="card">
+            <div class="card-title">Pilih Tanggal &amp; Jam</div>
+            <div class="card-sub">Pilih tanggal terlebih dahulu, lalu pilih jam yang tersedia</div>
+
+            <!-- Date -->
+            <div class="date-wrap">
+              <label class="form-label">
+                <ion-icon name="calendar-outline"></ion-icon>
+                Tanggal Kunjungan
+              </label>
+              <div class="date-row">
+                <input type="date" id="dateInput" class="form-input" onchange="onDateChange(this.value)" />
+                <div class="date-hint">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  <span>Senin–Sabtu<br>Buka 08:00–17:00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Time slots container -->
+            <div id="timeSlotsWrap">
+              <div class="date-hint" style="justify-content:center;text-align:center;padding:24px;">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <span>Pilih tanggal dulu untuk melihat slot jam yang tersedia</span>
+              </div>
+            </div>
+
+            <div class="nav-buttons">
+              <button class="btn btn-secondary" onclick="goToStep(1)">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                Sebelumnya
+              </button>
+              <button class="btn btn-primary" id="next2Btn" onclick="goToStep(3)" disabled>
+                Review Janji
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </div><!-- /panel-2 -->
+
+        <!-- ===== STEP 3: KONFIRMASI ===== -->
+        <div class="step-panel" id="panel-3">
+          <div class="card">
+            <div class="card-title">Konfirmasi Janji Temu</div>
+            <div class="card-sub">Periksa kembali semua data sebelum mengkonfirmasi</div>
+
+            <!-- User info -->
+            <div class="user-info-card">
+              <div class="review-avatar" id="reviewAvatarBig">?</div>
+              <div>
+                <div class="review-user-name" id="reviewUserNameBig">—</div>
+                <div class="review-user-email" id="reviewUserEmailBig">—</div>
+              </div>
+            </div>
+
+            <!-- Detail janji -->
+            <div class="review-detail">
+              <div class="review-detail-title">
+                <ion-icon name="medkit-outline"></ion-icon>
+                Detail Janji Temu
+              </div>
+              <div class="review-row">
+                <ion-icon name="fitness-outline"></ion-icon>
+                <div>
+                  <div class="review-lbl">Layanan</div>
+                  <div class="review-val" id="rv-service">—</div>
+                </div>
+              </div>
+              <div class="review-row">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <div>
+                  <div class="review-lbl">Tanggal</div>
+                  <div class="review-val" id="rv-date">—</div>
+                </div>
+              </div>
+              <div class="review-row">
+                <ion-icon name="time-outline"></ion-icon>
+                <div>
+                  <div class="review-lbl">Jam Kunjungan</div>
+                  <div class="review-val" id="rv-time">—</div>
+                </div>
+              </div>
+              <div class="review-row" id="rv-notes-row" style="display:none;">
+                <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+                <div>
+                  <div class="review-lbl">Keluhan / Catatan</div>
+                  <div class="review-val" id="rv-notes">—</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="notice-box">
+              <ion-icon name="logo-whatsapp"></ion-icon>
+              <p>Admin kami akan <strong>menghubungi Anda via WhatsApp</strong> dalam 1&times;24 jam untuk
+                mengkonfirmasi jadwal. Pastikan nomor WhatsApp aktif.</p>
+            </div>
+
+            <div class="nav-buttons">
+              <button class="btn btn-secondary" onclick="goToStep(2)">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                Ubah
+              </button>
+              <button class="btn btn-success" id="submitBtn" onclick="submitAppointment()">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                Konfirmasi Janji
+              </button>
+            </div>
+          </div>
+        </div><!-- /panel-3 -->
+
+      </div><!-- /form-container -->
+
+      <!-- KOLOM KANAN: Riwayat Janji -->
+      <div class="history-section">
+        <div class="history-head">
+          <h2 class="history-title">Riwayat Janji</h2>
+          <span class="count-badge" id="histCountBadge">0 Janji</span>
+        </div>
+
+        <div class="history-loading" id="histLoading">
+          <div class="spinner-white"></div>
+          Memuat riwayat...
+        </div>
+
+        <div class="history-empty" id="histEmpty" style="display:none;">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <p>Belum ada riwayat janji temu.<br>Buat janji pertama Anda sekarang!</p>
+        </div>
+
+        <div class="history-list" id="histList" style="display:none;"></div>
+      </div><!-- /history-section -->
+
+    </div><!-- /main-grid -->
+
+  </div><!-- /page-wrapper -->
+
+  <!-- ===== SUCCESS MODAL ===== -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-box">
+      <div class="modal-icon">✅</div>
+      <div class="modal-title">Janji Berhasil!</div>
+      <p class="modal-text">
+        Terima kasih, <strong id="modalNameTxt">Pasien</strong>!<br>
+        Janji Anda telah tersimpan di sistem kami. Admin akan menghubungi via WhatsApp.
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-success" style="width:100%;justify-content:center;" onclick="closeModal()">
+          <ion-icon name="checkmark-outline"></ion-icon>
+          Selesai
+        </button>
+        <button class="btn btn-secondary" style="width:100%;justify-content:center;" onclick="makeAnother()">
+          Buat Janji Baru
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <span id="toastMsg">Pesan error</span>
+  </div>
+
+  <script>
+    // ── GANTI URL INI dengan URL deployment Apps Script Anda ──
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzedtDmLDaC1DxoQoh4MD2qTRjJI1bxeECEuBkVeTRTqJSiIK7kBq8Y9bKa4qeDlfKzIg/exec';
+
+    // ── Helper: Generate WIB Timestamp dari browser ──
+    function getWIBTimestamp() {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Jakarta',
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false
+      });
+      const parts = formatter.formatToParts(now);
+      const get = type => (parts.find(p => p.type === type) || {}).value || '00';
+      return `${get('day')}-${get('month')}-${get('year')} ${get('hour')}:${get('minute')} WIB`;
+    }
+
+    // ── Helper: fetch GET via Apps Script ──
+    async function apiGet(action, params = {}) {
+      const url = new URL(API_URL);
+      url.searchParams.set('action', action);
+      for (const [k, v] of Object.entries(params)) {
+        url.searchParams.set(k, v);
+      }
+      const res = await fetch(url.toString());
+      return await res.json();
+    }
+
+    // ── Helper: fetch POST via Apps Script ──
+    async function apiPost(payload) {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+      return await res.json();
+    }
+
+    // ── STATE ──
+    const state = {
+      step: 1,
+      service: '',
+      notes: '',
+      date: '',
+      time: '',
+      histCount: 0,
+      editingId: null
+    };
+
+    // ── USER SESSION dari localStorage ──
+    let currentUser = null;
+
+    function initUser() {
+      const raw = localStorage.getItem('klinikqu_user');
+      if (!raw) {
+        // Fallback: Asumsikan user adalah pasien agar halaman bisa dibuka tanpa login ulang
+        currentUser = {
+          userId: 'dummy-' + Date.now(),
+          nama: 'Pasien KlinikQu',
+          email: 'pasien@klinikqu.com',
+          phone: '08000000000'
+        };
+        const chip = document.getElementById('userChip');
+        chip.style.display = 'flex';
+        document.getElementById('userAvatar').textContent = 'P';
+        document.getElementById('userNameDisplay').textContent = currentUser.nama;
+        return;
+      }
+      try {
+        currentUser = JSON.parse(raw);
+        const chip = document.getElementById('userChip');
+        chip.style.display = 'flex';
+        const initial = (currentUser.nama || 'U').charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = initial;
+        document.getElementById('userNameDisplay').textContent = currentUser.nama || 'Pasien';
+      } catch (e) {
+        console.warn('User data invalid, using guest mode');
+        // Mode guest untuk demo tanpa login
+        currentUser = { userId: 'guest-' + Date.now(), nama: 'Guest', email: 'guest@demo.com', phone: '' };
+      }
+    }
+
+    // ── INIT MIN DATE ──
+    function initDate() {
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth() + 1).padStart(2, '0');
+      const d = String(today.getDate()).padStart(2, '0');
+      document.getElementById('dateInput').min = `${y}-${m}-${d}`;
+    }
+
+    // ── CHAR COUNTER ──
+    document.getElementById('keluhanInput').addEventListener('input', function () {
+      document.getElementById('charCount').textContent = this.value.length;
+    });
+
+    // ── SELECT SERVICE ──
+    function selectService(card) {
+      document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      state.service = card.getAttribute('data-service');
+      document.getElementById('next1Btn').disabled = false;
+    }
+
+    // ── STEP NAVIGATION ──
+    function goToStep(target) {
+      if (target > state.step && !validateStep(state.step)) return;
+
+      // Update panels
+      document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`panel-${target}`).classList.add('active');
+
+      // Update step indicators
+      for (let i = 1; i <= 3; i++) {
+        const si = document.getElementById(`si-${i}`);
+        si.classList.remove('active', 'done');
+        if (i < target) si.classList.add('done');
+        else if (i === target) si.classList.add('active');
+        if (i < 3) {
+          const sl = document.getElementById(`sl-${i}`);
+          sl.classList.toggle('done', i < target);
+        }
+      }
+
+      if (target === 3) populateReview();
+      state.step = target;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── VALIDATE STEP ──
+    function validateStep(step) {
+      if (step === 1) {
+        if (!state.service) { showToast('Pilih layanan terlebih dahulu!'); return false; }
+        state.notes = document.getElementById('keluhanInput').value.trim();
+      }
+      if (step === 2) {
+        if (!state.date) { showToast('Pilih tanggal kunjungan!'); return false; }
+        if (!state.time) { showToast('Pilih jam kunjungan!'); return false; }
+      }
+      return true;
+    }
+
+    // ── DATE CHANGE → FETCH BOOKED SLOTS ──
+    async function onDateChange(dateVal) {
+      state.date = dateVal;
+      state.time = '';
+      document.getElementById('next2Btn').disabled = true;
+
+      const wrap = document.getElementById('timeSlotsWrap');
+      wrap.innerHTML = `<div class="loading-slots"><div class="spinner"></div> Memuat jadwal tersedia...</div>`;
+
+      let bookedTimes = [];
+      try {
+        const data = await apiGet('getBookedSlots', { date: dateVal });
+        if (!data.success) throw new Error('Server error');
+        bookedTimes = (data.bookedTimes || []).map(t => fmtTimeSafe(t));
+        document.getElementById('apiWarn').style.display = 'none';
+      } catch (e) {
+        console.warn('Cannot reach server, showing all slots as available:', e.message);
+        document.getElementById('apiWarn').style.display = 'flex';
+      }
+
+      renderTimeSlots(bookedTimes);
+    }
+
+    // ── RENDER TIME SLOTS ──
+    const TIME_GROUPS = [
+      {
+        label: 'Pagi', icon: 'sunny-outline',
+        slots: ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30']
+      },
+      {
+        label: 'Siang', icon: 'partly-sunny-outline',
+        slots: ['12:00', '12:30', '13:00', '13:30', '14:00', '14:30']
+      },
+      {
+        label: 'Sore', icon: 'moon-outline',
+        slots: ['15:00', '15:30', '16:00', '16:30', '17:00']
+      }
+    ];
+
+    function renderTimeSlots(bookedTimes) {
+      const wrap = document.getElementById('timeSlotsWrap');
+      let html = `
+        <div class="time-legend">
+          <div class="legend-item"><div class="legend-dot available"></div>Tersedia</div>
+          <div class="legend-item"><div class="legend-dot selected-c"></div>Dipilih</div>
+          <div class="legend-item"><div class="legend-dot booked-c"></div>Penuh</div>
+        </div>
+      `;
+
+      TIME_GROUPS.forEach(group => {
+        html += `
+          <div class="time-section">
+            <div class="time-section-label">
+              <ion-icon name="${group.icon}"></ion-icon>
+              ${group.label}
+            </div>
+            <div class="time-grid">
+        `;
+        group.slots.forEach(slot => {
+          const isBooked = bookedTimes.includes(slot);
+          html += `
+            <button
+              class="time-btn${isBooked ? ' booked' : ''}"
+              data-time="${slot}"
+              ${isBooked ? 'disabled' : `onclick="selectTime('${slot}', this)"`}
+            >${slot}</button>
+          `;
+        });
+        html += `</div></div>`;
+      });
+
+      wrap.innerHTML = html;
+    }
+
+    // ── SELECT TIME ──
+    function selectTime(time, btn) {
+      document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.time = time;
+      document.getElementById('next2Btn').disabled = false;
+    }
+
+    // ── POPULATE REVIEW ──
+    function populateReview() {
+      const initial = (currentUser.nama || 'U').charAt(0).toUpperCase();
+      document.getElementById('reviewAvatarBig').textContent = initial;
+      document.getElementById('reviewUserNameBig').textContent = currentUser.nama || '—';
+      document.getElementById('reviewUserEmailBig').textContent = currentUser.email || '—';
+
+      document.getElementById('rv-service').textContent = state.service;
+      document.getElementById('rv-date').textContent = fmtDate(state.date);
+      document.getElementById('rv-time').textContent = state.time + ' WIB';
+
+      const notesRow = document.getElementById('rv-notes-row');
+      if (state.notes) {
+        document.getElementById('rv-notes').textContent = state.notes;
+        notesRow.style.display = 'flex';
+      } else {
+        notesRow.style.display = 'none';
+      }
+    }
+
+    // ── SUBMIT APPOINTMENT ──
+    async function submitAppointment() {
+      const btn = document.getElementById('submitBtn');
+      const isEdit = !!state.editingId;
+      btn.disabled = true;
+      btn.innerHTML = `<div class="spinner" style="border-left-color:white;"></div> ${isEdit ? 'Memperbarui' : 'Menyimpan'}...`;
+
+      const payload = {
+        userId: currentUser.userId,
+        userName: currentUser.nama,
+        userEmail: currentUser.email,
+        userPhone: currentUser.phone || '',
+        service: state.service,
+        date: state.date,
+        time: state.time,
+        notes: state.notes,
+        timestamp: getWIBTimestamp()
+      };
+
+      try {
+        payload.action = isEdit ? 'updateAppointment' : 'createAppointment';
+        if (isEdit) payload.appointmentId = state.editingId;
+
+        const data = await apiPost(payload);
+
+        if (data.success) {
+          document.getElementById('modalNameTxt').textContent = currentUser.nama;
+          if (isEdit) {
+            document.querySelector('.modal-title').textContent = 'Pembaruan Berhasil!';
+            document.querySelector('.modal-text').innerHTML = `Janji temu Anda telah <strong>berhasil diperbarui</strong>.`;
+          } else {
+            document.querySelector('.modal-title').textContent = 'Janji Berhasil!';
+          }
+          document.getElementById('successModal').classList.add('show');
+
+          // Refresh history instead of just prepending
+          document.getElementById('histList').innerHTML = '';
+          state.histCount = 0;
+          loadHistory();
+        } else {
+          showToast(data.message || 'Gagal menyimpan janji, coba lagi');
+          // If conflict, refresh date
+          if (data.message && data.message.includes('terisi')) {
+            goToStep(2);
+            if (state.date) onDateChange(state.date);
+          }
+        }
+      } catch (err) {
+        console.warn('Error submitting:', err.message);
+        showToast('Gagal terhubung ke server');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = `<ion-icon name="checkmark-circle-outline"></ion-icon> ${isEdit ? 'Perbarui Janji' : 'Konfirmasi Janji'}`;
+    }
+
+    // ── LOAD HISTORY FROM API ──
+    async function loadHistory() {
+      if (!currentUser) return;
+      try {
+        const data = await apiGet('getAppointments', { userId: currentUser.userId });
+        document.getElementById('histLoading').style.display = 'none';
+        if (data.success && data.appointments.length > 0) {
+          data.appointments.forEach(apt => addHistoryCard(apt, false));
+        } else {
+          document.getElementById('histEmpty').style.display = 'block';
+        }
+      } catch (e) {
+        document.getElementById('histLoading').style.display = 'none';
+        document.getElementById('histEmpty').style.display = 'block';
+      }
+    }
+
+    // ── ADD HISTORY CARD ──
+    const svcEmoji = {
+      'Pemeriksaan Gigi': '🦷', 'Scaling / Karang Gigi': '✨',
+      'Cabut Gigi': '🩺', 'Tambal Gigi': '🔧',
+      'Konsultasi Ortodonti': '😁', 'Saluran Akar': '💊'
+    };
+
+    function addHistoryCard(apt, prepend = true) {
+      state.histCount++;
+      document.getElementById('histCountBadge').textContent = `${state.histCount} Janji`;
+      document.getElementById('histEmpty').style.display = 'none';
+      document.getElementById('histList').style.display = 'flex';
+
+      const statusMap = {
+        menunggu: 'status-menunggu',
+        dikonfirmasi: 'status-dikonfirmasi',
+        selesai: 'status-selesai',
+        dibatalkan: 'status-dibatalkan'
+      };
+      const statusLabel = {
+        menunggu: 'Menunggu', dikonfirmasi: 'Dikonfirmasi',
+        selesai: 'Selesai', dibatalkan: 'Dibatalkan'
+      };
+      const st = apt.status || 'menunggu';
+      const emoji = svcEmoji[apt.service] || '🦷';
+
+      const card = document.createElement('div');
+      card.className = 'history-card';
+
+      // Store full apt data in a data attribute or closure is better for complex objects
+      // We'll use a simple onclick with JSON stringify for the demo or just pass ID if we find it in a list
+
+      // Safely extract date and time from apt fields
+      const displayDate = fmtDateSafe(apt.date);
+      const displayTime = fmtTimeSafe(apt.time);
+      const displayCreatedAt = fmtCreatedAt(apt.createdAt);
+
+      card.innerHTML = `
+        <div class="h-icon">${emoji}</div>
+        <div>
+          <div class="h-service">${apt.service}</div>
+          <div class="h-meta">
+            <span><ion-icon name="calendar-outline"></ion-icon>${displayDate}, ${displayTime} WIB</span>
+          </div>
+          <div class="h-meta" style="margin-top:2px;opacity:0.7;font-size:11px;">
+            <span><ion-icon name="time-outline"></ion-icon>${displayCreatedAt} WIB</span>
+          </div>
+        </div>
+        <div class="h-actions">
+          <button class="action-btn btn-edit-link" title="Edit" id="edit-btn-${apt._id}">
+            <ion-icon name="create-outline"></ion-icon>
+          </button>
+          <span class="status-badge ${statusMap[st]}">${statusLabel[st]}</span>
+        </div>
+      `;
+
+      // Add event listener for edit
+      const editBtn = card.querySelector(`#edit-btn-${apt._id}`);
+      if (st === 'menunggu') {
+        editBtn.onclick = () => editAppointment(apt);
+      } else {
+        editBtn.style.display = 'none';
+      }
+
+      const list = document.getElementById('histList');
+      if (prepend) list.prepend(card); else list.appendChild(card);
+    }
+
+    // ── EDIT APPOINTMENT ──
+    function editAppointment(apt) {
+      state.editingId = apt._id;
+      state.service = apt.service;
+      state.notes = apt.notes || '';
+      state.date = apt.date;
+      state.time = apt.time;
+
+      // Update UI Step 1
+      const cards = document.querySelectorAll('.svc-card');
+      cards.forEach(c => {
+        c.classList.toggle('selected', c.getAttribute('data-service') === apt.service);
+      });
+      document.getElementById('keluhanInput').value = state.notes;
+      document.getElementById('charCount').textContent = state.notes.length;
+      document.getElementById('next1Btn').disabled = false;
+      document.getElementById('cancelEditBtn').style.display = 'flex';
+
+      // Update UI Step 2 (Date)
+      document.getElementById('dateInput').value = apt.date;
+      onDateChange(apt.date); // This will render slots and highlight the current time
+
+      // Change Submit text
+      document.getElementById('submitBtn').innerHTML = '<ion-icon name="checkmark-circle-outline"></ion-icon> Perbarui Janji';
+
+      goToStep(1);
+      showToast('Mode Edit: Silakan sesuaikan jadwal', 'info');
+    }
+
+    function cancelEdit() {
+      state.editingId = null;
+      makeAnother();
+      document.getElementById('cancelEditBtn').style.display = 'none';
+    }
+
+    // ── MODAL & RESET ──
+    function closeModal() {
+      document.getElementById('successModal').classList.remove('show');
+    }
+
+    function makeAnother() {
+      closeModal();
+      state.service = ''; state.notes = ''; state.date = ''; state.time = '';
+      document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('keluhanInput').value = '';
+      document.getElementById('charCount').textContent = '0';
+      document.getElementById('dateInput').value = '';
+      document.getElementById('timeSlotsWrap').innerHTML =
+        `<div class="date-hint" style="justify-content:center;padding:24px;">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>Pilih tanggal dulu untuk melihat slot jam yang tersedia</span>
+        </div>`;
+      document.getElementById('next1Btn').disabled = true;
+      document.getElementById('next2Btn').disabled = true;
+      goToStep(1);
+    }
+
+    // ── TOAST ──
+    function showToast(msg, type = 'error') {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      t.className = `toast ${type === 'info' ? 'info' : ''}`;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // ── BACK ──
+    function confirmBack() {
+      if (confirm('Yakin ingin kembali? Data janji yang belum disimpan akan hilang.')) {
+        window.location.href = 'login-karyawan.html';
+      }
+    }
+
+    // ── FORMAT DATE (safe - handles undefined, ISO strings, Date objects) ──
+    function fmtDateSafe(val) {
+      if (!val) return '—';
+      const str = String(val);
+      // If it's already yyyy-MM-dd format (plain text)
+      if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return fmtDate(str);
+      // If it's an ISO string, use Intl to convert properly to WIB
+      try {
+        const d = new Date(str);
+        if (!isNaN(d.getTime()) && d.getFullYear() > 1900) {
+          const fmt = new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'Asia/Jakarta',
+            year: 'numeric', month: '2-digit', day: '2-digit'
+          });
+          return fmtDate(fmt.format(d)); // returns yyyy-MM-dd → fmtDate makes it readable
+        }
+      } catch (e) { }
+      return str;
+    }
+
+    // ── FORMAT TIME (safe - handles "12:30", ISO timestamps) ──
+    function fmtTimeSafe(val) {
+      if (!val) return '—';
+      const str = String(val);
+      // If already HH:mm format (plain text from backend)
+      if (/^\d{2}:\d{2}$/.test(str)) return str;
+      // If it's an ISO string (Sheets auto-convert), use Intl for correct WIB conversion
+      try {
+        const d = new Date(str);
+        if (!isNaN(d.getTime())) {
+          const fmt = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Asia/Jakarta',
+            hour: '2-digit', minute: '2-digit', hour12: false
+          });
+          return fmt.format(d);
+        }
+      } catch (e) { }
+      // Try as WIB formatted string "dd-MM-yyyy HH:mm WIB"
+      const matchWIB = str.match(/(\d{2}:\d{2})\s*WIB/);
+      if (matchWIB) return matchWIB[1];
+      return str;
+    }
+
+    // ── FORMAT CREATED AT (parse ISO → "2026-05-28 09:30" WIB) ──
+    function fmtCreatedAt(val) {
+      if (!val) return '—';
+      const str = String(val);
+      try {
+        const d = new Date(str);
+        if (!isNaN(d.getTime()) && d.getFullYear() > 1900) {
+          const fmtD = new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'Asia/Jakarta',
+            year: 'numeric', month: '2-digit', day: '2-digit'
+          });
+          const fmtT = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Asia/Jakarta',
+            hour: '2-digit', minute: '2-digit', hour12: false
+          });
+          return `${fmtD.format(d)} ${fmtT.format(d)}`;
+        }
+      } catch (e) { }
+      // Match "dd-MM-yyyy HH:mm WIB" format (already WIB)
+      const matchWIB = str.match(/^(\d{2}-\d{2}-\d{4})\s+(\d{2}:\d{2})/);
+      if (matchWIB) return `${matchWIB[1]} ${matchWIB[2]}`;
+      return str;
+    }
+
+    // ── FORMAT DATE ──
+    function fmtDate(str) {
+      if (!str) return '—';
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const d = new Date(str + 'T00:00:00');
+      return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    // ── BOOT ──
+    initUser();
+    initDate();
+    loadHistory();
+  </script>
+</body>
+
+</html>

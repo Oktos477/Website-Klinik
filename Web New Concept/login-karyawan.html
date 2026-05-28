@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | KlinikQu Digital Portal</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --accent: #2dd4bf;
+            --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Back Button */
+        .btn-back {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            color: var(--primary-dark);
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-back:hover {
+            transform: translateX(-5px);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.2);
+        }
+
+        /* Main Container */
+        .main-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 1000px;
+            height: 620px;
+            border-radius: 40px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: cardEntrance 0.8s ease-out;
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Left Branding Panel */
+        .brand-panel {
+            background: linear-gradient(135deg, #0d9488 0%, #065f46 100%);
+            color: white;
+            flex: 0.9;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-panel::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .brand-panel h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .brand-panel p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        /* Right Form Panel */
+        .form-panel {
+            flex: 1;
+            padding: 60px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Tabs */
+        .tab-switcher {
+            background: #f1f5f9;
+            padding: 6px;
+            border-radius: 18px;
+            display: flex;
+            margin-bottom: 35px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Form Elements */
+        .input-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #f1f5f9;
+            border-radius: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            background: #f8fafc;
+        }
+
+        .input-box input:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            box-shadow: 0 12px 24px -6px rgba(13, 148, 136, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -6px rgba(13, 148, 136, 0.4);
+            filter: brightness(1.05);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .link-text {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .link-text:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 850px) {
+            .main-card {
+                flex-direction: column;
+                height: auto;
+                border-radius: 30px;
+            }
+
+            .brand-panel {
+                padding: 40px;
+                flex: none;
+            }
+
+            .form-panel {
+                padding: 40px;
+            }
+
+            .brand-panel h1 {
+                font-size: 2.5rem;
+            }
+
+            .btn-back {
+                top: 15px;
+                left: 15px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Tombol Back -->
+    <a href="index.html" class="btn-back">
+        <i class="fas fa-arrow-left"></i>
+        <span>Kembali ke Beranda</span>
+    </a>
+
+    <div class="main-card">
+        <!-- Panel Kiri: Branding -->
+        <div class="brand-panel">
+            <h1 class="z-10">KlinikQu<br>Digital Hub</h1>
+            <p class="z-10">
+                Pintu masuk utama menuju layanan kesehatan modern. Kelola janji temu, akses rekam medis, dan atur
+                operasional klinik dalam satu platform terpadu.
+            </p>
+
+            <ul class="feature-list z-10">
+                <li>
+                    <div class="feature-icon"><i class="fas fa-calendar-check"></i></div>
+                    Reservasi Instan 24/7
+                </li>
+                <li>
+                    <div class="feature-icon"><i class="fas fa-user-shield"></i></div>
+                    Keamanan Data Berlapis
+                </li>
+                <li>
+                    <div class="feature-icon"><i class="fas fa-microchip"></i></div>
+                    Monitoring Sistem Real-time
+                </li>
+            </ul>
+        </div>
+
+        <!-- Panel Kanan: Login Form -->
+        <div class="form-panel">
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-8">Selamat Datang</h2>
+
+            <!-- Switcher Karyawan / Pasien -->
+            <div class="tab-switcher">
+                <div class="tab-btn active" id="tabBiz">Karyawan</div>
+                <div class="tab-btn" id="tabClient">Pasien</div>
+            </div>
+
+            <!-- Error Message Box -->
+            <div id="loginErrMsg"
+                class="hidden bg-red-50 border border-red-100 text-red-600 p-4 rounded-2xl text-sm font-semibold mb-6 flex items-center gap-3">
+                <i class="fas fa-exclamation-circle text-lg"></i>
+                <span id="errText"></span>
+            </div>
+
+            <!-- Form Karyawan -->
+            <form id="businessForm" class="space-y-4">
+                <div class="input-box">
+                    <input type="email" id="email" placeholder="Email Kerja" required>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="companyCode" placeholder="Kode Perusahaan (misal: xyz)">
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <label class="flex items-center gap-2 text-gray-500 cursor-pointer">
+                        <input type="checkbox" class="accent-teal-600 w-4 h-4"> Ingat Perangkat
+                    </label>
+                    <a href="#" onclick="openResetModal('karyawan'); return false;" class="link-text">Lupa Password?</a>
+                </div>
+                <button type="submit" class="btn-login" id="btnBizSubmit">MASUK PORTAL</button>
+            </form>
+
+            <!-- Form Pasien -->
+            <form id="clientForm" class="space-y-4 hidden">
+                <div class="input-box">
+                    <input type="email" id="clientEmail" placeholder="Email Pasien" required>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="clientPassword" placeholder="Password" required>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <label class="flex items-center gap-2 text-gray-500 cursor-pointer">
+                        <input type="checkbox" class="accent-teal-600 w-4 h-4"> Ingat Saya
+                    </label>
+                    <a href="#" onclick="openResetModal('pasien'); return false;" class="link-text">Lupa Password?</a>
+                </div>
+                <button type="submit" class="btn-login" id="btnClientSubmit">MASUK PASIEN</button>
+                <p class="text-center text-gray-500 text-sm mt-6">
+                    Baru di KlinikQu? <a href="signup-pasien.html" class="link-text font-bold">Daftar Akun</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL RESET PASSWORD -->
+    <div id="resetModal"
+        class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden justify-center items-center p-4">
+        <div
+            class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-white border-opacity-50 transform scale-95 transition-all duration-300">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Reset Password</h3>
+                <button onclick="closeResetModal()" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div id="resetMsg" class="hidden p-4 rounded-2xl text-sm font-semibold mb-6 flex items-center gap-3">
+                <i id="resetMsgIcon" class="fas text-lg"></i>
+                <span id="resetMsgText"></span>
+            </div>
+
+            <form id="resetForm" class="space-y-4">
+                <div class="input-box">
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Email Terdaftar</label>
+                    <input type="email" id="resetEmail" placeholder="Masukkan email Anda" required>
+                </div>
+                <div class="input-box">
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Tipe Pengguna</label>
+                    <select id="resetRole"
+                        class="w-full p-4 border-2 border-gray-100 rounded-2xl outline-none bg-gray-50 focus:border-teal-500 focus:bg-white transition text-sm font-medium"
+                        required>
+                        <option value="pasien">Pasien</option>
+                        <option value="karyawan">Karyawan</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Password Baru</label>
+                    <input type="password" id="resetNewPassword" placeholder="Masukkan password baru" required>
+                </div>
+                <button type="submit" id="btnResetSubmit" class="btn-login w-full py-4 text-center mt-4">SIMPAN PASSWORD
+                    BARU</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripting Logic -->
+    <script>
+        // ── GANTI URL INI dengan URL deployment Apps Script Anda ──
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzedtDmLDaC1DxoQoh4MD2qTRjJI1bxeECEuBkVeTRTqJSiIK7kBq8Y9bKa4qeDlfKzIg/exec';
+
+        const tabBiz = document.getElementById('tabBiz');
+        const tabClient = document.getElementById('tabClient');
+        const businessForm = document.getElementById('businessForm');
+        const clientForm = document.getElementById('clientForm');
+        const loginErrMsg = document.getElementById('loginErrMsg');
+        const errText = document.getElementById('errText');
+
+        // Logic Switch Tab
+        tabBiz.onclick = () => {
+            tabBiz.classList.add('active');
+            tabClient.classList.remove('active');
+            businessForm.classList.remove('hidden');
+            clientForm.classList.add('hidden');
+            loginErrMsg.classList.add('hidden');
+        };
+
+        tabClient.onclick = () => {
+            tabClient.classList.add('active');
+            tabBiz.classList.remove('active');
+            clientForm.classList.remove('hidden');
+            businessForm.classList.add('hidden');
+            loginErrMsg.classList.add('hidden');
+        };
+
+        // Logic Auth — terhubung ke Google Apps Script
+        async function handleLogin(e, type) {
+            e.preventDefault();
+            loginErrMsg.classList.add('hidden');
+
+            let email, password, companyCode, btn;
+            let payload = {};
+
+            if (type === 'karyawan') {
+                email = document.getElementById('email').value.trim();
+                password = document.getElementById('password').value;
+                companyCode = document.getElementById('companyCode').value.trim();
+                btn = document.getElementById('btnBizSubmit');
+                payload = { action: 'login-karyawan', email, password, companyCode };
+            } else {
+                email = document.getElementById('clientEmail').value.trim();
+                password = document.getElementById('clientPassword').value;
+                btn = document.getElementById('btnClientSubmit');
+                payload = { action: 'login-pasien', email, password };
+            }
+
+            const originalBtn = btn.textContent;
+            btn.textContent = 'Memverifikasi...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    localStorage.setItem('klinikqu_user', JSON.stringify(data.user));
+                    window.location.href = (type === 'karyawan') ? 'dashboard-karyawan.html' : 'appointment.html';
+                } else {
+                    errText.textContent = data.message || 'Data tidak sesuai, periksa kembali.';
+                    loginErrMsg.classList.remove('hidden');
+                }
+            } catch (err) {
+                errText.textContent = 'Gagal terhubung ke server. Pastikan Apps Script sudah di-deploy.';
+                loginErrMsg.classList.remove('hidden');
+            }
+            btn.textContent = originalBtn;
+            btn.disabled = false;
+        }
+
+        businessForm.onsubmit = (e) => handleLogin(e, 'karyawan');
+        clientForm.onsubmit = (e) => handleLogin(e, 'pasien');
+
+        // ── RESET PASSWORD FUNCTIONALITY ──
+        const resetModal = document.getElementById('resetModal');
+        const resetForm = document.getElementById('resetForm');
+        const resetMsg = document.getElementById('resetMsg');
+        const resetMsgText = document.getElementById('resetMsgText');
+        const resetMsgIcon = document.getElementById('resetMsgIcon');
+
+        function openResetModal(role) {
+            resetForm.reset();
+            resetMsg.classList.add('hidden');
+            document.getElementById('resetRole').value = role; // pre-select Karyawan or Pasien
+            resetModal.classList.remove('hidden');
+            resetModal.classList.add('flex');
+        }
+
+        function closeResetModal() {
+            resetModal.classList.add('hidden');
+            resetModal.classList.remove('flex');
+        }
+
+        // Close modal when clicking outside content area
+        resetModal.addEventListener('click', function (e) {
+            if (e.target === this) closeResetModal();
+        });
+
+        resetForm.onsubmit = async function (e) {
+            e.preventDefault();
+            resetMsg.classList.add('hidden');
+
+            const email = document.getElementById('resetEmail').value.trim();
+            const role = document.getElementById('resetRole').value;
+            const newPassword = document.getElementById('resetNewPassword').value;
+            const btn = document.getElementById('btnResetSubmit');
+
+            const originalBtn = btn.textContent;
+            btn.textContent = 'Menyimpan...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({
+                        action: 'reset-password',
+                        email,
+                        role,
+                        newPassword
+                    })
+                });
+                const data = await res.json();
+
+                resetMsg.classList.remove('hidden');
+                if (data.success) {
+                    resetMsg.className = 'bg-teal-50 border border-teal-100 text-teal-600 p-4 rounded-2xl text-sm font-semibold mb-6 flex items-center gap-3';
+                    resetMsgIcon.className = 'fas fa-check-circle text-lg text-teal-500';
+                    resetMsgText.textContent = data.message || 'Password berhasil diperbarui!';
+
+                    // Reset form and close modal after 2 seconds
+                    resetForm.reset();
+                    setTimeout(closeResetModal, 2000);
+                } else {
+                    resetMsg.className = 'bg-red-50 border border-red-100 text-red-600 p-4 rounded-2xl text-sm font-semibold mb-6 flex items-center gap-3';
+                    resetMsgIcon.className = 'fas fa-exclamation-circle text-lg text-red-500';
+                    resetMsgText.textContent = data.message || 'Gagal mereset password.';
+                }
+            } catch (err) {
+                resetMsg.classList.remove('hidden');
+                resetMsg.className = 'bg-red-50 border border-red-100 text-red-600 p-4 rounded-2xl text-sm font-semibold mb-6 flex items-center gap-3';
+                resetMsgIcon.className = 'fas fa-exclamation-circle text-lg text-red-500';
+                resetMsgText.textContent = 'Gagal menghubungi server. Pastikan Apps Script aktif.';
+            }
+            btn.textContent = originalBtn;
+            btn.disabled = false;
+        };
+    </script>
+</body>
+
+</html>
